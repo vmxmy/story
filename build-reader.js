@@ -6,8 +6,32 @@
  * 增强版 - 每章配备精美封面图
  */
 
+require('dotenv').config();
+
 const fs = require('fs');
 const path = require('path');
+
+// 环境变量配置
+const CONFIG = {
+  contentBasePath: process.env.CONTENT_BASE_PATH || 'content',
+  translationBasePath: process.env.TRANSLATION_BASE_PATH || 'zh-translation',
+  tailwindCDN: process.env.TAILWIND_CDN || 'https://cdn.tailwindcss.com',
+  markedCDN: process.env.MARKED_CDN || 'https://cdn.jsdelivr.net/npm/marked/marked.min.js',
+  googleFontsURL: process.env.GOOGLE_FONTS_URL || 'https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap',
+  unsplashBaseURL: process.env.UNSPLASH_BASE_URL || 'https://images.unsplash.com',
+  unsplashParams: process.env.UNSPLASH_PARAMS || 'q=80&w=1600&auto=format&fit=crop',
+  publicURL: process.env.PUBLIC_URL || '/'
+};
+
+// 辅助函数：构建 Unsplash 图片 URL
+function buildImageURL(photoId) {
+  return `${CONFIG.unsplashBaseURL}/${photoId}?${CONFIG.unsplashParams}`;
+}
+
+// 辅助函数：构建内容文件路径
+function buildContentPath(relativePath) {
+  return `${CONFIG.contentBasePath}/${relativePath}`;
+}
 
 // 章节清单（按阅读顺序）- 包含封面图片
 const chapters = [
@@ -19,161 +43,161 @@ const chapters = [
   {
     id: 'characters',
     title: '人物档案',
-    file: 'content/character-profiles.md',
-    coverImage: 'https://images.unsplash.com/photo-1516192518150-0d8fee5425e3?q=80&w=1600&auto=format&fit=crop',
+    file: buildContentPath('character-profiles.md'),
+    coverImage: buildImageURL('photo-1516192518150-0d8fee5425e3'),
     coverAlt: 'Character Silhouettes'
   },
   {
     id: 'ch01',
     title: '第一章：地质一瞬',
     subtitle: 'Geological Blink',
-    file: 'content/part-01-time-dilation/chapter-01-geological-blink.md',
+    file: buildContentPath('part-01-time-dilation/chapter-01-geological-blink.md'),
     part: 'Part I: 时间膨胀',
-    coverImage: 'https://images.unsplash.com/photo-1464278533981-50106e6176b1?q=80&w=1600&auto=format&fit=crop',
+    coverImage: buildImageURL('photo-1464278533981-50106e6176b1'),
     coverAlt: 'Rock Layers'
   },
   {
     id: 'ch02',
     title: '第二章：七十五次自转',
     subtitle: 'Seventy-Five Rotations',
-    file: 'content/part-01-time-dilation/chapter-02-seventy-five-rotations.md',
+    file: buildContentPath('part-01-time-dilation/chapter-02-seventy-five-rotations.md'),
     part: 'Part I: 时间膨胀',
-    coverImage: 'https://images.unsplash.com/photo-1566926946110-5b5345878b4b?q=80&w=1600&auto=format&fit=crop',
+    coverImage: buildImageURL('photo-1566926946110-5b5345878b4b'),
     coverAlt: 'Twilight Over Water'
   },
   {
     id: 'ch03',
     title: '第三章：清朝悖论',
     subtitle: 'The Qing Paradox',
-    file: 'content/part-01-time-dilation/chapter-03-the-qing-paradox.md',
+    file: buildContentPath('part-01-time-dilation/chapter-03-the-qing-paradox.md'),
     part: 'Part I: 时间膨胀',
-    coverImage: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?q=80&w=1600&auto=format&fit=crop',
+    coverImage: buildImageURL('photo-1508804185872-d7badad00f7d'),
     coverAlt: 'Ancient Chinese Architecture'
   },
   {
     id: 'ch04',
     title: '第四章：五十年的幽灵',
     subtitle: 'Fifty Years of Ghosts',
-    file: 'content/part-01-time-dilation/chapter-04-fifty-years-of-ghosts.md',
+    file: buildContentPath('part-01-time-dilation/chapter-04-fifty-years-of-ghosts.md'),
     part: 'Part I: 时间膨胀',
-    coverImage: 'https://images.unsplash.com/photo-1552423314-bf59f6621667?q=80&w=1600&auto=format&fit=crop',
+    coverImage: buildImageURL('photo-1552423314-bf59f6621667'),
     coverAlt: 'Old Street Taiwan'
   },
   {
     id: 'ch05',
     title: '第五章：病毒式时间',
     subtitle: 'Viral Time',
-    file: 'content/part-01-time-dilation/chapter-05-viral-time.md',
+    file: buildContentPath('part-01-time-dilation/chapter-05-viral-time.md'),
     part: 'Part I: 时间膨胀',
-    coverImage: 'https://images.unsplash.com/photo-1449034446853-66c86144b0ad?q=80&w=1600&auto=format&fit=crop',
+    coverImage: buildImageURL('photo-1449034446853-66c86144b0ad'),
     coverAlt: 'San Francisco Fog'
   },
   {
     id: 'ch06',
     title: '第六章：中华之船',
     subtitle: 'The Ship of Zhonghua',
-    file: 'content/part-02-identity-protocols/chapter-06-the-ship-of-zhonghua.md',
+    file: buildContentPath('part-02-identity-protocols/chapter-06-the-ship-of-zhonghua.md'),
     part: 'Part II: 身份协议',
-    coverImage: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=1600&auto=format&fit=crop',
+    coverImage: buildImageURL('photo-1544551763-46a013bb70d5'),
     coverAlt: 'Ancient Ship at Sea'
   },
   {
     id: 'ch07',
     title: '第七章：分区子程序',
     subtitle: 'Partition Subroutines',
-    file: 'content/part-02-identity-protocols/chapter-07-partition-subroutines.md',
+    file: buildContentPath('part-02-identity-protocols/chapter-07-partition-subroutines.md'),
     part: 'Part II: 身份协议',
-    coverImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1600&auto=format&fit=crop',
+    coverImage: buildImageURL('photo-1518770660439-4636190af475'),
     coverAlt: 'Circuit Board Technology'
   },
   {
     id: 'ch08',
     title: '第八章：模因漂移',
     subtitle: 'Memetic Drift',
-    file: 'content/part-02-identity-protocols/chapter-08-memetic-drift.md',
+    file: buildContentPath('part-02-identity-protocols/chapter-08-memetic-drift.md'),
     part: 'Part II: 身份协议',
-    coverImage: 'https://images.unsplash.com/photo-1628595351029-c2bf17511435?q=80&w=1600&auto=format&fit=crop',
+    coverImage: buildImageURL('photo-1628595351029-c2bf17511435'),
     coverAlt: 'DNA Helix Evolution'
   },
   {
     id: 'ch09',
     title: '第九章：识别协议',
     subtitle: 'The Recognition Protocol',
-    file: 'content/part-02-identity-protocols/chapter-09-the-recognition-protocol.md',
+    file: buildContentPath('part-02-identity-protocols/chapter-09-the-recognition-protocol.md'),
     part: 'Part II: 身份协议',
-    coverImage: 'https://images.unsplash.com/photo-1483736762161-1d107f3c78e1?q=80&w=1600&auto=format&fit=crop',
+    coverImage: buildImageURL('photo-1483736762161-1d107f3c78e1'),
     coverAlt: 'Passport and Identity'
   },
   {
     id: 'ch10',
     title: '第十章：量子叠加',
     subtitle: 'Quantum Superposition',
-    file: 'content/part-02-identity-protocols/chapter-10-quantum-superposition.md',
+    file: buildContentPath('part-02-identity-protocols/chapter-10-quantum-superposition.md'),
     part: 'Part II: 身份协议',
-    coverImage: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=1600&auto=format&fit=crop',
+    coverImage: buildImageURL('photo-1635070041078-e363dbe005cb'),
     coverAlt: 'Quantum Light Waves'
   },
   {
     id: 'ch11',
     title: '第十一章：势能',
     subtitle: 'Potential Energy',
-    file: 'content/part-03-energy-states/chapter-11-potential-energy.md',
+    file: buildContentPath('part-03-energy-states/chapter-11-potential-energy.md'),
     part: 'Part III: 能量态',
-    coverImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1600&auto=format&fit=crop',
+    coverImage: buildImageURL('photo-1506905925346-21bda4d32df4'),
     coverAlt: 'Mountain Peak Tension'
   },
   {
     id: 'ch12',
     title: '第十二章：引力井',
     subtitle: 'Gravity Wells',
-    file: 'content/part-03-energy-states/chapter-12-gravity-wells.md',
+    file: buildContentPath('part-03-energy-states/chapter-12-gravity-wells.md'),
     part: 'Part III: 能量态',
-    coverImage: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=1600&auto=format&fit=crop',
+    coverImage: buildImageURL('photo-1462331940025-496dfbfc7564'),
     coverAlt: 'Cosmic Gravity'
   },
   {
     id: 'ch13',
     title: '第十三章：活化能',
     subtitle: 'Activation Energy',
-    file: 'content/part-03-energy-states/chapter-13-activation-energy.md',
+    file: buildContentPath('part-03-energy-states/chapter-13-activation-energy.md'),
     part: 'Part III: 能量态',
-    coverImage: 'https://images.unsplash.com/photo-1530651788726-1dbf58eeef1f?q=80&w=1600&auto=format&fit=crop',
+    coverImage: buildImageURL('photo-1530651788726-1dbf58eeef1f'),
     coverAlt: 'Chemical Reaction Fire'
   },
   {
     id: 'ch14',
     title: '第十四章：熵释放',
     subtitle: 'Entropy Release',
-    file: 'content/part-03-energy-states/chapter-14-entropy-release.md',
+    file: buildContentPath('part-03-energy-states/chapter-14-entropy-release.md'),
     part: 'Part III: 能量态',
-    coverImage: 'https://images.unsplash.com/photo-1533231040102-5ec8881a6991?q=80&w=1600&auto=format&fit=crop',
+    coverImage: buildImageURL('photo-1533231040102-5ec8881a6991'),
     coverAlt: 'Destruction and Chaos'
   },
   {
     id: 'ch15',
     title: '第十五章：均衡寻求',
     subtitle: 'Equilibrium Seeking',
-    file: 'content/part-03-energy-states/chapter-15-equilibrium-seeking.md',
+    file: buildContentPath('part-03-energy-states/chapter-15-equilibrium-seeking.md'),
     part: 'Part III: 能量态',
-    coverImage: 'https://images.unsplash.com/photo-1604537529428-15bcbeecfe4d?q=80&w=1600&auto=format&fit=crop',
+    coverImage: buildImageURL('photo-1604537529428-15bcbeecfe4d'),
     coverAlt: 'Balance and Ruins'
   },
   {
     id: 'ch16',
     title: '第十六章：热寂',
     subtitle: 'Heat Death',
-    file: 'content/part-04-epilogue/chapter-16-heat-death.md',
+    file: buildContentPath('part-04-epilogue/chapter-16-heat-death.md'),
     part: 'Part IV: 尾声',
-    coverImage: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?q=80&w=1600&auto=format&fit=crop',
+    coverImage: buildImageURL('photo-1419242902214-272b3f66ee7a'),
     coverAlt: 'Deep Space Universe'
   },
   {
     id: 'ch17',
     title: '第十七章：人择反转',
     subtitle: 'The Anthropic Inversion',
-    file: 'content/part-04-epilogue/chapter-17-the-anthropic-inversion.md',
+    file: buildContentPath('part-04-epilogue/chapter-17-the-anthropic-inversion.md'),
     part: 'Part IV: 尾声',
-    coverImage: 'https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?q=80&w=1600&auto=format&fit=crop',
+    coverImage: buildImageURL('photo-1475274047050-1d0c0975c63e'),
     coverAlt: 'Human Connection Hope'
   }
 ];
@@ -218,7 +242,7 @@ function markdownToHtml(md) {
       }).join('\n');
 
       processedSections.push(`
-        <div class="observer-block font-mono-custom">
+        <div class="observer-block font-observer">
           <h3 class="text-sm font-bold uppercase tracking-widest mb-4 opacity-70">/// ${heading.trim()} ///</h3>
           ${paras}
         </div>
@@ -333,7 +357,6 @@ function generateTemplates() {
 </template>
       `;
     } else {
-      const content = loadChapter(ch.file);
       const coverHTML = ch.coverImage ? `
         <div class="mb-16 relative rounded-xl overflow-hidden shadow-2xl group aspect-[3/4] sm:aspect-[21/9]">
           <img src="${ch.coverImage}"
@@ -349,10 +372,10 @@ function generateTemplates() {
       ` : '';
 
       templatesHTML += `
-<template id="${ch.id}">
+<template id="${ch.id}" data-file="${ch.file}">
   <article class="max-w-3xl mx-auto px-6 py-12 text-lg">
     ${coverHTML}
-    ${content}
+    <div class="chapter-content"></div>
   </article>
 </template>
       `;
@@ -373,10 +396,11 @@ function generateHTML() {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>高维俯瞰 - High-Dimensional Observer</title>
     <meta name="description" content="一部关于身份、冲突与宇宙无意义的哲学科幻小说">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="${CONFIG.tailwindCDN}"></script>
+    <script src="${CONFIG.markedCDN}"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="${CONFIG.googleFontsURL}" rel="stylesheet">
     <style>
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
@@ -389,7 +413,13 @@ function generateHTML() {
             font-family: 'Noto Serif SC', serif;
             transition: background-color 0.3s, color 0.3s;
         }
-        .font-mono-custom { font-family: 'JetBrains Mono', monospace; }
+        .font-mono-custom { font-family: 'Courier New', 'Consolas', monospace; }
+        .font-observer {
+            font-family: 'Noto Sans SC', sans-serif;
+            font-weight: 100;
+            letter-spacing: 0.03em;
+            line-height: 1.9;
+        }
 
         /* Themes */
         .theme-light { background-color: #f8fafc; color: #1e293b; --nav-bg: rgba(255,255,255,0.8); --sidebar-bg: #f1f5f9; --active-item: #e2e8f0; }
@@ -558,11 +588,68 @@ function generateHTML() {
     ${templatesHTML}
 
     <script>
+        // 运行时配置
+        const APP_CONFIG = ${JSON.stringify({
+          contentBasePath: CONFIG.contentBasePath,
+          publicURL: CONFIG.publicURL
+        })};
+
         const CHAPTERS = ${JSON.stringify(chapters.map(ch => ({ id: ch.id, title: ch.title })))};
         let currentChapterIndex = 0;
         let currentFontSize = 18;
 
-        function renderChapter(chapterId) {
+        // Custom markdown renderer for observer blocks and narrative
+        function processMarkdown(md) {
+            // Remove frontmatter
+            md = md.replace(/^---[\\s\\S]*?---\\n/m, '');
+
+            let inObserver = false;
+
+            // Custom renderer using hooks API
+            const renderer = {
+                heading({tokens, depth}) {
+                    const text = this.parser.parseInline(tokens);
+                    if (depth === 2) {
+                        if (text.includes('Observer') || text.includes('观察者')) {
+                            inObserver = true;
+                            return '</div><div class="observer-block font-observer"><h3 class="text-sm font-bold uppercase tracking-widest mb-4 opacity-70">/// ' + text + ' ///</h3>';
+                        } else {
+                            if (inObserver) {
+                                inObserver = false;
+                                return '</div><div class="flex justify-center items-center my-12 opacity-30"><span class="text-2xl">❖</span></div><div class="narrative-text"><h3 class="text-2xl font-bold mb-8 text-center">' + text + '</h3>';
+                            }
+                            return '<h3 class="text-2xl font-bold mb-8 text-center">' + text + '</h3>';
+                        }
+                    }
+                    return '<h' + depth + '>' + text + '</h' + depth + '>';
+                },
+                paragraph({tokens}) {
+                    const text = this.parser.parseInline(tokens);
+                    return '<p class="mb-4">' + text + '</p>';
+                },
+                hr() {
+                    if (inObserver) {
+                        return '<hr class="border-current opacity-20 my-4">';
+                    }
+                    return '<div class="flex justify-center my-8"><span class="w-16 h-px bg-current opacity-30"></span></div>';
+                }
+            };
+
+            marked.use({
+                breaks: false,
+                gfm: true,
+                renderer
+            });
+
+            let html = '<div class="narrative-text">' + marked.parse(md) + '</div>';
+
+            // Add drop-cap to first paragraph after narrative heading
+            html = html.replace(/(<div class="narrative-text">[\\s\\S]*?<h3[^>]*>[^<]*<\\/h3>\\s*<p class="mb-4">)/, '$1'.replace('<p class="mb-4">', '<p class="mb-4 drop-cap">'));
+
+            return html;
+        }
+
+        async function renderChapter(chapterId) {
             const chapterIndex = CHAPTERS.findIndex(ch => ch.id === chapterId);
             if (chapterIndex === -1) return;
 
@@ -574,10 +661,29 @@ function generateHTML() {
             // Fade out
             container.style.opacity = '0';
 
-            setTimeout(() => {
-                // Swap content
+            setTimeout(async () => {
+                // Clone template
                 container.innerHTML = '';
-                container.appendChild(template.content.cloneNode(true));
+                const content = template.content.cloneNode(true);
+                container.appendChild(content);
+
+                // Load markdown content if file specified
+                const filePath = template.getAttribute('data-file');
+                if (filePath) {
+                    try {
+                        const response = await fetch(filePath);
+                        if (response.ok) {
+                            const md = await response.text();
+                            const html = processMarkdown(md);
+                            const chapterContent = container.querySelector('.chapter-content');
+                            if (chapterContent) {
+                                chapterContent.innerHTML = html;
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Failed to load chapter:', error);
+                    }
+                }
 
                 // Update sidebar navigation
                 document.querySelectorAll('.nav-item').forEach(btn => {
