@@ -74,6 +74,46 @@
             text-align: justify;
         }
 
+        /* Character Profile Page */
+        .card-bg { background-color: #ffffff; border: 1px solid #e2e8f0; }
+        .theme-sepia .card-bg { background-color: #eaddc5; border-color: #d4c5a6; }
+        .theme-dark .card-bg { background-color: #1e293b; border-color: #334155; }
+        .character-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 4rem; }
+        @media (min-width: 768px) { .character-grid { grid-template-columns: repeat(2, 1fr); } }
+        .character-card { position: relative; overflow: hidden; border-radius: 0.5rem; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+        .character-card .accent-circle { position: absolute; top: 0; right: 0; width: 6rem; height: 6rem; border-bottom-left-radius: 100%; margin-right: -2.5rem; margin-top: -2.5rem; }
+        .character-card h4 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .character-card .role-tag { font-size: 0.75rem; opacity: 0.6; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'Courier New', monospace; }
+        .character-card .meta-box { font-size: 0.875rem; font-family: 'Courier New', monospace; margin-bottom: 1rem; opacity: 0.8; border-left-width: 2px; border-left-style: solid; padding-left: 0.75rem; }
+        .character-card .meta-box p { margin-bottom: 0.25rem; }
+        .character-card .content-area { flex-grow: 1; }
+        .character-card .content-area p { margin-bottom: 0.75rem; opacity: 0.9; line-height: 1.7; }
+        .character-card .trajectory { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid currentColor; opacity: 0.1; font-size: 0.875rem; font-style: italic; }
+        .character-card .trajectory-inner { opacity: 0.7; }
+        .character-card.observer-card { border: 2px solid currentColor; }
+        .supporting-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 4rem; }
+        @media (min-width: 640px) { .supporting-grid { grid-template-columns: repeat(2, 1fr); } }
+        .supporting-card { padding: 1rem; border-radius: 0.25rem; }
+        .supporting-card strong { font-size: 1.125rem; display: block; margin-bottom: 0.25rem; }
+        .supporting-card p { opacity: 0.8; font-size: 0.875rem; margin-top: 0.25rem; line-height: 1.6; }
+        .section-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid currentColor; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.1em; }
+        .diagrams-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; margin-bottom: 4rem; }
+        @media (min-width: 1024px) { .diagrams-grid { grid-template-columns: repeat(2, 1fr); } }
+        .diagram-title { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'Courier New', monospace; }
+        .relationship-box { padding: 1.5rem; border-radius: 0.5rem; font-family: 'Courier New', monospace; font-size: 0.875rem; }
+        .spectrum-box { padding: 1.5rem; border-radius: 0.5rem; display: flex; flex-direction: column; justify-content: center; min-height: 20rem; }
+        .spectrum-bar { height: 1rem; border-radius: 9999px; background: linear-gradient(90deg, #ef4444 0%, #a855f7 50%, #3b82f6 100%); box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 1.5rem; }
+        .spectrum-labels { display: flex; justify-content: space-between; font-size: 0.75rem; font-family: 'Courier New', monospace; opacity: 0.6; margin-bottom: 0.5rem; }
+        .spectrum-markers { position: relative; height: 8rem; font-weight: 700; font-size: 0.875rem; }
+        .spectrum-marker { position: absolute; display: flex; flex-direction: column; align-items: center; transform: translateX(-50%); }
+        .spectrum-marker .marker-line { width: 2px; margin-bottom: 0.25rem; }
+        .spectrum-marker .marker-label { text-align: center; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; }
+        .spectrum-marker .marker-label span { font-weight: 300; opacity: 0.7; display: block; }
+        .intro-text { text-align: center; max-width: 42rem; margin: 0 auto 3rem; opacity: 0.8; font-style: italic; }
+        .node-box { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 0.25rem; border: 1px solid; font-weight: 700; }
+        .connection-line { display: flex; justify-content: center; align-items: center; gap: 0.5rem; opacity: 0.6; margin: 0.25rem 0; font-size: 0.75rem; }
+        .meta-line { border-top: 1px dashed currentColor; opacity: 0.3; margin-top: 5rem; }
+
         /* Drop Cap */
         .drop-cap::first-letter {
             font-size: 3.5em;
@@ -109,14 +149,31 @@
         /* Sidebar */
         #sidebar {
             transition: transform 0.3s ease-in-out;
+            transform: translateX(0);
         }
         #sidebar.closed {
             transform: translateX(-100%);
         }
         @media (min-width: 1024px) {
+            #sidebar {
+                transform: translateX(0);
+            }
             #sidebar.closed {
                 transform: translateX(0);
             }
+        }
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .sidebar-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
         }
 
         .nav-item.active {
@@ -133,8 +190,11 @@
     <!-- Progress Bar -->
     <div id="progress-bar"></div>
 
+    <!-- Sidebar Overlay -->
+    <div id="sidebar-overlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
     <!-- Sidebar -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-80 lg:w-72 shadow-xl lg:shadow-none lg:static border-r border-current border-opacity-10 flex flex-col transform -translate-x-full lg:translate-x-0" style="background-color: var(--sidebar-bg);">
+    <aside id="sidebar" class="closed fixed inset-y-0 left-0 z-50 w-80 lg:w-72 shadow-xl lg:shadow-none lg:static border-r border-current border-opacity-10 flex flex-col" style="background-color: var(--sidebar-bg);">
         <div class="p-6 border-b border-current border-opacity-10">
             <div class="font-bold font-mono-custom text-blue-600 tracking-widest text-xs uppercase mb-1">High-Dimensional Observer</div>
             <h1 class="font-bold text-2xl mb-1">高维俯瞰</h1>
@@ -734,9 +794,14 @@
         let currentFontSize = 18;
 
         // Custom markdown renderer for observer blocks and narrative
-        function processMarkdown(md) {
+        function processMarkdown(md, isCharacterProfile = false) {
             // Remove frontmatter
             md = md.replace(/^---[\s\S]*?---\n/m, '');
+
+            // Special handling for character profiles
+            if (isCharacterProfile) {
+                return processCharacterProfile(md);
+            }
 
             let inObserver = false;
 
@@ -784,6 +849,112 @@
             return html;
         }
 
+        function processCharacterProfile(md) {
+            // Character data with colors
+            const characters = {
+                chenwei: { name: '陈伟 (Chen Wei)', role: '坚定的民族主义者', color: 'red', age: 42, location: '北京', stance: '刚性民族主义，强烈的中国认同' },
+                linxiaowen: { name: '林晓文 (Lin Xiaowen)', role: '身份模糊者', color: 'green', age: 28, location: '台北', stance: '游走于身份模糊地带，代际转变' },
+                sarahhuang: { name: '黄雅琪 (Sarah Huang)', role: '碎片化/离散者', color: 'blue', age: 35, location: '旧金山 (ABC/台湾裔)', stance: '带有离散碎片感的后国家世界主义' },
+                drzhang: { name: '张逸云博士 (Dr. Evelyn Zhang)', role: '观察者代理', color: 'purple', age: 58, location: '不定 (学术圈)', stance: '元观察者，学科性超然', isObserver: true }
+            };
+
+            let html = '<div class="intro-text"><p>以下数据提取自观察者日志：关于主要相关个体的背景、信念系统及预测轨迹。</p></div>';
+
+            // Core characters section
+            html += '<h3 class="section-title">核心阵容 / Core Ensemble</h3>';
+            html += '<div class="character-grid">';
+
+            // Parse character content from markdown
+            const charSections = md.split(/###\s+/);
+            charSections.forEach(section => {
+                if (!section.trim()) return;
+                const lines = section.split('\n');
+                const nameRaw = lines[0].trim();
+
+                // Match character by name
+                let charKey = null;
+                if (nameRaw.includes('陈伟')) charKey = 'chenwei';
+                else if (nameRaw.includes('林晓文')) charKey = 'linxiaowen';
+                else if (nameRaw.includes('黄雅琪')) charKey = 'sarahhuang';
+                else if (nameRaw.includes('张逸云')) charKey = 'drzhang';
+
+                if (charKey && characters[charKey]) {
+                    const char = characters[charKey];
+                    const bgMatch = section.match(/\*\*背景\*\*[：:][\s\S]*?(?=\*\*核心信念\*\*)/);
+                    const beliefMatch = section.match(/\*\*核心信念\*\*[：:](.+?)(?=\n|$)/);
+                    const funcMatch = section.match(/\*\*(人物功能|角色功能)\*\*[：:](.+?)(?=\n|$)/);
+                    const arcMatch = section.match(/\*\*发展弧线\*\*[：:](.+?)(?=\n|$)/);
+
+                    let background = bgMatch ? bgMatch[0].replace(/\*\*背景\*\*[：:]/, '').replace(/[-•]\s*/g, '').trim() : '';
+                    let belief = beliefMatch ? beliefMatch[1].trim() : '';
+                    let func = funcMatch ? funcMatch[2].trim() : '';
+                    let arc = arcMatch ? arcMatch[1].trim() : '';
+
+                    html += '<div class="character-card card-bg' + (char.isObserver ? ' observer-card' : '') + '">';
+                    html += '<div class="accent-circle bg-' + char.color + '-500"></div>';
+                    html += '<h4>' + char.name + '</h4>';
+                    html += '<span class="role-tag">' + char.role + '</span>';
+                    html += '<div class="meta-box" style="border-left-color: var(--tw-' + char.color + '-500, #' + (char.color === 'red' ? 'ef4444' : char.color === 'green' ? '22c55e' : char.color === 'blue' ? '3b82f6' : '8b5cf6') + ')">';
+                    html += '<p>年龄: ' + char.age + ' | 地点: ' + char.location + '</p>';
+                    html += '<p>立场: ' + char.stance + '</p>';
+                    html += '</div>';
+                    html += '<div class="content-area">';
+                    if (background) html += '<p><strong>背景：</strong>' + background.substring(0, 200) + '</p>';
+                    if (belief) html += '<p><strong>核心信念：</strong>' + belief + '</p>';
+                    if (func) html += '<p><strong>角色功能：</strong>' + func + '</p>';
+                    html += '</div>';
+                    if (arc) {
+                        html += '<div class="trajectory"><div class="trajectory-inner"><strong>轨迹预测：</strong>' + arc + '</div></div>';
+                    }
+                    html += '</div>';
+                }
+            });
+            html += '</div>';
+
+            // Supporting characters
+            html += '<h3 class="section-title">配角阵容 / Supporting Characters</h3>';
+            html += '<div class="supporting-grid">';
+            html += '<div class="supporting-card card-bg"><strong>唐将军 (General Tang)</strong><p>解放军负责台湾应急计划的军官。实用主义而非意识形态化，视统一为战略必要性。代表推向冲突的体制惯性。</p></div>';
+            html += '<div class="supporting-card card-bg"><strong>吴部长 (Minister Wu)</strong><p>台湾防务负责人。前学者转型的政治家，明白抵抗的徒劳但必须备战。代表维持主权的沉重负担。</p></div>';
+            html += '<div class="supporting-card card-bg"><strong>陈凯文 (Kevin Chen)</strong><p>林晓文的儿时玩伴，移居上海工作。体现了创造两岸个人联系的经济融合。他的选择阐明了个体关系如何存在于更大的系统力量中。</p></div>';
+            html += '<div class="supporting-card card-bg"><strong>刘教授 (Professor Liu)</strong><p>年迈的历史学家，经历过多次政权更迭。提供"中国身份"作为历史建构的活体记忆。见证了身份在单个人生中的可变性。</p></div>';
+            html += '</div>';
+
+            // Diagrams
+            html += '<div class="diagrams-grid">';
+
+            // Relationship Map
+            html += '<div><h3 class="diagram-title">人物关系图谱 / Relationship Map</h3>';
+            html += '<div class="relationship-box card-bg">';
+            html += '<div style="text-align:center;margin-bottom:0.5rem"><span class="node-box" style="border-color:#ef4444;background:rgba(239,68,68,0.1);color:#dc2626">陈伟 (北京)</span></div>';
+            html += '<div class="connection-line">← 学术辩论 →</div>';
+            html += '<div style="text-align:center;margin-bottom:0.5rem"><span class="node-box" style="border-color:#8b5cf6;background:rgba(139,92,246,0.1);color:#7c3aed">张博士 (观察者)</span></div>';
+            html += '<div style="text-align:center;opacity:0.6;font-size:0.75rem">↓ 交流 / 互动 ↓</div>';
+            html += '<div style="text-align:center;margin:0.5rem 0"><span class="node-box" style="border-color:#22c55e;background:rgba(34,197,94,0.1);color:#16a34a">林晓文 (台北)</span></div>';
+            html += '<div style="display:flex;justify-content:space-around;margin-top:1rem;font-size:0.75rem">';
+            html += '<div style="text-align:center"><div style="opacity:0.5">↓ 朋友</div><span class="node-box" style="border-color:#94a3b8">陈凯文 (上海)</span></div>';
+            html += '<div style="text-align:center"><div style="opacity:0.5">↔ 表亲</div><span class="node-box" style="border-color:#3b82f6;color:#2563eb">黄雅琪 (旧金山)</span></div>';
+            html += '</div></div></div>';
+
+            // Identity Spectrum
+            html += '<div><h3 class="diagram-title">身份光谱定位 / Identity Spectrum</h3>';
+            html += '<div class="spectrum-box card-bg">';
+            html += '<div class="spectrum-labels"><span>刚性民族认同</span><span>流动的后国家认同</span></div>';
+            html += '<div class="spectrum-bar"></div>';
+            html += '<div class="spectrum-markers">';
+            html += '<div class="spectrum-marker" style="left:5%"><div class="marker-line" style="height:1rem;background:#ef4444"></div><div class="marker-label" style="background:rgba(239,68,68,0.1);color:#dc2626">陈伟<span>不可分割</span></div></div>';
+            html += '<div class="spectrum-marker" style="left:45%"><div class="marker-line" style="height:2rem;background:#22c55e"></div><div class="marker-label" style="background:rgba(34,197,94,0.1);color:#16a34a">林晓文<span>被迫选择</span></div></div>';
+            html += '<div class="spectrum-marker" style="left:85%"><div class="marker-line" style="height:1rem;background:#3b82f6"></div><div class="marker-label" style="background:rgba(59,130,246,0.1);color:#2563eb">黄雅琪<span>多重/流动</span></div></div>';
+            html += '</div>';
+            html += '<div class="meta-line"></div>';
+            html += '<div style="text-align:center;margin-top:0.5rem;font-size:0.75rem;color:#8b5cf6;font-family:monospace">张博士 (元位置 / Meta-Position)</div>';
+            html += '</div></div>';
+
+            html += '</div>';
+
+            return html;
+        }
+
         async function renderChapter(chapterId) {
             const chapterIndex = CHAPTERS.findIndex(ch => ch.id === chapterId);
             if (chapterIndex === -1) return;
@@ -809,7 +980,9 @@
                         const response = await fetch(filePath);
                         if (response.ok) {
                             const md = await response.text();
-                            const html = processMarkdown(md);
+                            // Check if this is the character profiles page
+                            const isCharacterProfile = chapterId === 'characters';
+                            const html = processMarkdown(md, isCharacterProfile);
                             const chapterContent = container.querySelector('.chapter-content');
                             if (chapterContent) {
                                 chapterContent.innerHTML = html;
@@ -864,7 +1037,10 @@
         }
 
         function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('closed');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('closed');
+            overlay.classList.toggle('active');
         }
 
         function adjustFontSize(change) {
